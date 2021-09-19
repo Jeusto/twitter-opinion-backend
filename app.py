@@ -1,17 +1,19 @@
 import re
 import tweepy
 import json
+import os
 from textblob import TextBlob
 from flask import Flask, Response
 
 app = Flask(__name__)
 
-######### Authentification
-consumer_key = "Bh1f63ZU45T5hIWb60ZHi6fxk"
-consumer_secret = "UqBY5kPFl0l149LypYcYGaN13KMTCwdBDNdKyVIx1D7kp5Hj78"
 
-access_token = "2577372415-PvsHY3LUcs5WJh0jCnGL9dHaqLHhmQDOcYOQo4Q"
-access_token_secret = "BTZA8okNBBistebV0UcaFYctXqHCk71wLxlemA2l8ZtqJ"
+######### Authentification
+consumer_key = os.environ['consumer_key']
+consumer_secret = os.environ['consumer_secret']
+
+access_token = os.environ['access_token']
+access_token_secret = os.environ['access_token_secret']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -20,7 +22,6 @@ api = tweepy.API(auth)
 
 
 ######### Functions
-#
 def clean_text(text):
     text = re.sub(r"@[A-Za-z0-9]+", "", text)
     text = re.sub(r"#", "", text)
@@ -28,8 +29,6 @@ def clean_text(text):
     text = re.sub(r"https?:\/\/\S+", "", text)
     return text
 
-
-#
 def get_opinion(keyword):
     sentiment_average = 0
 
@@ -73,7 +72,7 @@ def get_opinion(keyword):
         elif polarity <= -0.2 and polarity > -0.7:
             negative += 1
         elif polarity <= -0.7:
-            negative += 1
+            strongly_negative += 1
 
         if polarity > max_positive:
             max_positive = polarity
@@ -83,15 +82,6 @@ def get_opinion(keyword):
             most_negative_tweet = tweet.text
 
     sentiment_average /= len(public_tweets)
-    print(f"Number of tweets: {len(public_tweets)}")
-    print(f"Average sentiment: {sentiment_average/ len(public_tweets) * 100}")
-    print(f"neutral: {neutral/ len(public_tweets) * 100}")
-    print(f"weakly_positive: {weakly_positive/ len(public_tweets) * 100}")
-    print(f"positive: {positive/ len(public_tweets) * 100}")
-    print(f"strongly_positive: {strongly_positive/ len(public_tweets) * 100}")
-    print(f"weakly_negative: {weakly_negative/ len(public_tweets) * 100}")
-    print(f"negative: {negative/ len(public_tweets) * 100}")
-    print(f"strongly_negative: {strongly_negative/ len(public_tweets) * 100}")
 
     response = Response(
         json.dumps({
