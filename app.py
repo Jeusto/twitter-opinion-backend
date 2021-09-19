@@ -141,6 +141,7 @@ def index():
 def return_opinion(keyword):
   response = get_opinion(keyword)
 
+  response.headers["Access-Control-Allow-Origin"] = "*"
   return response
 
 
