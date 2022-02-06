@@ -61,17 +61,17 @@ def get_opinion(keyword):
 
         if polarity == 0:
             neutral += 1
-        elif polarity > 0 and polarity < 0.2:
+        elif polarity > 0 and polarity < 0.33:
             weakly_positive += 1
-        elif polarity >= 0.2 and polarity < 0.7:
+        elif polarity >= 0.33 and polarity < 0.66:
             positive += 1
-        elif polarity >= 0.7:
+        elif polarity >= 0.66:
             strongly_positive += 1
-        elif polarity < 0 and polarity > -0.2:
+        elif polarity < 0 and polarity > -0.33:
             weakly_negative += 1
-        elif polarity <= -0.2 and polarity > -0.7:
+        elif polarity <= -0.33 and polarity > -0.66:
             negative += 1
-        elif polarity <= -0.7:
+        elif polarity <= -0.66:
             strongly_negative += 1
 
         if polarity > max_positive:
