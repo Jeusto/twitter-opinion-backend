@@ -6,7 +6,7 @@ authors = ["Jeusto <<>>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Flask = "^2.0.1"
+Flask = "^2.2.5"
 textblob = "^0.15.3"
 tweepy = "^3.10.0"
 
